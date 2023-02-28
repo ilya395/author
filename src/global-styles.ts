@@ -8,7 +8,7 @@ export const GlobalStyles = createGlobalStyle`
     font-style: normal;
   }
 
-  body * {
+  body, * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
