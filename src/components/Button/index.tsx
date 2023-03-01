@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import { IButtonProps } from './model';
 
 const Button = forwardRef<HTMLButtonElement, IButtonProps>((props, ref) => {
-  const { children, onClick} = props;
+  const { children, ...rest} = props;
   return (
-    <StyledButton onClick={onClick} ref={ref}>{children}</StyledButton>
+    <StyledButton {...rest} ref={ref}>{children}</StyledButton>
   );
 });
 

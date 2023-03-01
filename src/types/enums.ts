@@ -4,3 +4,8 @@ export enum EDirections {
   DownLeft = 'down-left',
   UpLeft = 'up-left',
 }
+
+export enum EActionTypes {
+  Click = 'click',
+  Hover = 'hover',
+}

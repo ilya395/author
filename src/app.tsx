@@ -1,27 +1,29 @@
 import React from 'react';
 import styled from 'styled-components';
-import Button from './components/Button';
 import DropdownMenu from './components/DropdownMenu';
-import MoreIcon from './components/svgs/More/Index';
 import { GlobalStyles } from './global-styles';
+import { menuItems, WORK_AREA_ID } from './types/constants';
+import { EActionTypes } from './types/enums';
 
 const App = () => {
   return (
     <>
       <GlobalStyles />
       <Wrap>
-        <One>
-          <DropdownMenu />
-        </One>
-        <Two>
-          <DropdownMenu />
-        </Two>
-        <Three>
-          <DropdownMenu />
-        </Three>
-        <Four>
-          <DropdownMenu />
-        </Four>
+        <Content id={WORK_AREA_ID}>
+          <One>
+            <DropdownMenu actionType={EActionTypes.Hover} items={menuItems} />
+          </One>
+          <Two>
+            <DropdownMenu items={menuItems} />
+          </Two>
+          <Three>
+            <DropdownMenu actionType={EActionTypes.Hover} items={menuItems} />
+          </Three>
+          <Four>
+            <DropdownMenu items={menuItems} />
+          </Four>
+        </Content>
       </Wrap>
     </>
   );
@@ -31,8 +33,14 @@ export default App;
 
 const Wrap = styled.div`
   width: 100vw;
-  // margin-left: calc(100vw - 100%);
-  height: 100vh;
+  min-height: 100vh;
+  overflow-y: scroll;
+  position: relative;
+`;
+
+const Content = styled.div`
+  width: 100%;
+  height: 1200px;
   display: grid;
   grid-template-areas:
   'one two'

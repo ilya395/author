@@ -1,22 +1,26 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { MIN_WIDTH } from '../../types/constants';
+import { EActionTypes } from '../../types/enums';
 import Button from '../Button';
 import MoreIcon from '../svgs/More/Index';
 import { getСoordinates } from './helpers';
 import { IDropdownMenuProps } from './model';
 
 const DropdownMenu = (props: IDropdownMenuProps) => {
-  const { content } = props;
+  const { content, actionType = EActionTypes.Click, items } = props;
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const onClickHandle = () => setIsOpen((state) => !state);
+
   const targetRef = useRef<HTMLButtonElement | null>(null);
 
   const menuRef  = useRef<HTMLDivElement | null>(null);
 
   const [menuNode, setMenuNode] = useState<HTMLDivElement | null>(null);
+
+  const scrollY = window.pageYOffset || document.documentElement.scrollTop;
 
   const computedCoordinates = useMemo(() => {
     const targetСoordinates = getСoordinates(targetRef);
@@ -39,23 +43,82 @@ const DropdownMenu = (props: IDropdownMenuProps) => {
       top,
       left,
     }
-  }, [targetRef, menuNode]);
+  }, [targetRef, menuNode,]);
+
+  const isOnClick = useMemo(() => actionType === EActionTypes.Click, [actionType]);
+  const isOnHover = useMemo(() => actionType === EActionTypes.Hover, [actionType]);
+
+  useEffect(() => {
+    const handle = (event: MouseEvent) => {
+      const target = event.target as Node;
+      if (
+        targetRef.current !== target &&
+        (target && !targetRef.current?.contains(target)) &&
+        menuNode !== target &&
+        (target && !menuNode?.contains(target))
+      ) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('click', handle);
+    return () => {
+      document.removeEventListener('click', handle);
+    };
+  }, [targetRef.current, menuNode]);
+
+  useEffect(() => {
+    const handle = () => {
+      console.log(computedCoordinates, scrollY);
+    };
+    window.addEventListener('scroll', handle);
+    return () => {
+      window.addEventListener('scroll', handle);;
+    }
+  }, [scrollY]);
 
   return (
     <>
-      <Button onClick={onClickHandle} ref={targetRef}>
+      <Button onClick={isOnClick ? onClickHandle : undefined} ref={targetRef} onMouseOver={isOnHover ? onClickHandle : undefined} onMouseOut={isOnHover ? onClickHandle : undefined}>
         <MoreIcon width={16} height={16} />
       </Button>
       {
-        isOpen ? <ContentWrap ref={(node:HTMLDivElement) => {
-          setMenuNode(node);
-        }} top={computedCoordinates.top} left={computedCoordinates.left} >11111111111111111111111</ContentWrap> : null
+        isOpen && items
+          ? <ContentWrap ref={(node:HTMLDivElement) => {
+              setMenuNode(node);
+            }}
+            top={computedCoordinates.top}
+            left={computedCoordinates.left}
+          >
+            {items.map(({ id, callback, label, icon: Icon, props }) => <MenuButton key={id} onClick={callback}><span>{label}</span>{Icon ? <IconWrap><Icon {...props} /></IconWrap> : null}</MenuButton>)}
+          </ContentWrap>
+          : null
       }
     </>
   );
 }
 
 export default DropdownMenu;
+
+const IconWrap = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-left: 15px;
+`;
+
+const MenuButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border: none;
+  background: transparent;
+
+  padding: 5px 10px;
+
+  cursor: pointer;
+`;
 
 const ContentWrap = styled.div<{ top?: number; left?: number; visible?: boolean }>`
   border-radius: 4px;

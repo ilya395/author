@@ -8,10 +8,20 @@ export const GlobalStyles = createGlobalStyle`
     font-style: normal;
   }
 
+  html {
+    margin-left: calc(100vw - 100%);
+  }
+
   body, * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Montserrat', sans-serif;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
   }
 `;
