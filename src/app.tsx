@@ -10,40 +10,34 @@ const App = () => {
     <>
       <GlobalStyles />
       <Content id={WORK_AREA_ID}>
-        <One>
-          <DropdownMenu items={menuItems} />
-        </One>
-        <Two>
-          <DropdownMenu items={menuItems} />
-        </Two>
-        <Three>
-          <DropdownMenu actionType={EActionTypes.Hover} items={menuItems} />
-        </Three>
-        <Four>
-          <DropdownMenu items={menuItems} />
-        </Four>
-      </Content>
+          <One>
+            <DropdownMenu items={menuItems} />
+          </One>
+          <Two>
+            <DropdownMenu items={menuItems} />
+          </Two>
+          <Three>
+            <DropdownMenu actionType={EActionTypes.Hover} items={menuItems} />
+          </Three>
+          <Four>
+            <DropdownMenu items={menuItems} />
+          </Four>
+        </Content>
     </>
   );
 };
 
 export default App;
 
-const Wrap = styled.div`
-  min-width: 100%;
-  min-height: 100vh;
-  overflow-y: scroll;
-
-`;
-
 const Content = styled.div`
   width: 100%;
-  height: 600px;
+  height: 800px;
   display: grid;
   grid-template-areas:
   'one two'
   'three four';
 
+  position: relative;
   padding: 25px;
 `;
 

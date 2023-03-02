@@ -42,8 +42,6 @@ const DropdownMenu = (props: IDropdownMenuProps) => {
     targetRef,
   });
 
-  useEffect(() => console.log(isVisible), [isVisible]);
-
   const menuCallbackHandler = (callback?: () => void) => () => {
     callback?.();
     onClickHandle();
