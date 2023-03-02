@@ -16,8 +16,6 @@ export const GlobalStyles = createGlobalStyle`
     margin: 0;
     padding: 0;
 
-    // overflow: auto;
-
     scroll-behavior: smooth;
 
     font-family: 'Montserrat', sans-serif;

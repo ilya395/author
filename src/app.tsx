@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import Button from './components/Button';
 import DropdownMenu from './components/DropdownMenu';
+import MoreIcon from './components/svgs/More/Index';
 import { GlobalStyles } from './global-styles';
 import { menuItems, WORK_AREA_ID } from './types/constants';
 import { EActionTypes } from './types/enums';
@@ -11,16 +13,49 @@ const App = () => {
       <GlobalStyles />
       <Content id={WORK_AREA_ID}>
           <One>
-            <DropdownMenu items={menuItems} />
+            <DropdownMenu
+              items={menuItems}
+              target={{
+                component: Button,
+                componentProps: {
+                  children: <MoreIcon width={16} height={16} />
+                },
+              }}
+            />
           </One>
           <Two>
-            <DropdownMenu items={menuItems} />
+            <DropdownMenu
+              items={menuItems}
+              target={{
+                component: Button,
+                componentProps: {
+                  children: <MoreIcon width={16} height={16} />
+                },
+              }}
+            />
           </Two>
           <Three>
-            <DropdownMenu actionType={EActionTypes.Hover} items={menuItems} />
+            <DropdownMenu
+              actionType={EActionTypes.Hover}
+              items={menuItems}
+              target={{
+                component: Button,
+                componentProps: {
+                  children: <MoreIcon width={16} height={16} />
+                },
+              }}
+            />
           </Three>
           <Four>
-            <DropdownMenu items={menuItems} />
+            <DropdownMenu
+              items={menuItems}
+              target={{
+                component: Button,
+                componentProps: {
+                  children: <MoreIcon width={16} height={16} />
+                },
+              }}
+            />
           </Four>
         </Content>
     </>

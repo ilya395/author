@@ -1,17 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { MIN_WIDTH } from '../../types/constants';
 import { EActionTypes } from '../../types/enums';
-import Button from '../Button';
-import MoreIcon from '../svgs/More/Index';
 import { useClick } from './hooks/Clicks';
 import { useCoordinates } from './hooks/Coordinates';
 import { useIntersection } from './hooks/Intersection';
 import { useMode } from './hooks/Mode';
 import { IDropdownMenuProps } from './model';
 
-const DropdownMenu = (props: IDropdownMenuProps) => {
-  const { actionType = EActionTypes.Click, items } = props;
+const DropdownMenu = <P extends JSX.IntrinsicAttributes, >(props: IDropdownMenuProps<P>) => {
+  const { actionType = EActionTypes.Click, items, target: { component: Component, componentProps } } = props;
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -49,9 +47,12 @@ const DropdownMenu = (props: IDropdownMenuProps) => {
 
   return (
     <>
-      <Button onClick={isOnClick ? onClickHandle : undefined} ref={targetRef} onMouseOver={isOnHover ? onClickHandle : undefined} onMouseOut={isOnHover ? onClickHandle : undefined}>
-        <MoreIcon width={16} height={16} />
-      </Button>
+      <Component
+        {...componentProps}
+        onClick={isOnClick ? onClickHandle : undefined}
+        ref={targetRef}
+        onMouseOver={isOnHover ? onClickHandle : undefined} onMouseOut={isOnHover ? onClickHandle : undefined}
+      />
       {
         isOpen && items && isVisible
           ? <ContentWrap ref={(node:HTMLDivElement) => {
