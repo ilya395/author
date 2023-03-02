@@ -1,14 +1,17 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { MIN_WIDTH } from '../../types/constants';
 import { EActionTypes } from '../../types/enums';
 import Button from '../Button';
 import MoreIcon from '../svgs/More/Index';
-import { getСoordinates } from './helpers';
+import { useClick } from './hooks/Clicks';
+import { useCoordinates } from './hooks/Coordinates';
+import { useIntersection } from './hooks/Intersection';
+import { useMode } from './hooks/Mode';
 import { IDropdownMenuProps } from './model';
 
 const DropdownMenu = (props: IDropdownMenuProps) => {
-  const { content, actionType = EActionTypes.Click, items } = props;
+  const { actionType = EActionTypes.Click, items } = props;
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -16,65 +19,35 @@ const DropdownMenu = (props: IDropdownMenuProps) => {
 
   const targetRef = useRef<HTMLButtonElement | null>(null);
 
-  const menuRef  = useRef<HTMLDivElement | null>(null);
-
   const [menuNode, setMenuNode] = useState<HTMLDivElement | null>(null);
 
-  const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+  const { top, left } = useCoordinates({
+    targetRef,
+    menuRef: {
+      current: menuNode
+    },
+  });
 
-  const computedCoordinates = useMemo(() => {
-    const targetСoordinates = getСoordinates(targetRef);
+  const { isOnClick, isOnHover } = useMode(actionType);
 
-    const menuCoordinates = menuRef.current ? getСoordinates(menuRef) : getСoordinates({
-      current: menuNode,
-    });
+  useClick({
+    targetRef,
+    menuRef: {
+      current: menuNode
+    },
+    callback: () => setIsOpen(false),
+  });
 
-    let left = targetСoordinates.xLeft;
-    if (targetСoordinates?.xRight && targetСoordinates.xRight < MIN_WIDTH) {
-      left = (targetСoordinates?.xLeft ?? 0) - (menuCoordinates?.width ?? 0) + (targetСoordinates?.width ?? 0)
-    }
+  const { isVisible } = useIntersection({
+    targetRef,
+  });
 
-    let top = (targetСoordinates?.yTop ?? 0) + (targetСoordinates?.height ?? 0);
-    if (targetСoordinates?.yBottom && targetСoordinates.yBottom < MIN_WIDTH) {
-      top = (targetСoordinates?.yTop ?? 0) - (menuCoordinates?.height ?? 0);
-    }
+  useEffect(() => console.log(isVisible), [isVisible]);
 
-    return {
-      top,
-      left,
-    }
-  }, [targetRef, menuNode,]);
-
-  const isOnClick = useMemo(() => actionType === EActionTypes.Click, [actionType]);
-  const isOnHover = useMemo(() => actionType === EActionTypes.Hover, [actionType]);
-
-  useEffect(() => {
-    const handle = (event: MouseEvent) => {
-      const target = event.target as Node;
-      if (
-        targetRef.current !== target &&
-        (target && !targetRef.current?.contains(target)) &&
-        menuNode !== target &&
-        (target && !menuNode?.contains(target))
-      ) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener('click', handle);
-    return () => {
-      document.removeEventListener('click', handle);
-    };
-  }, [targetRef.current, menuNode]);
-
-  useEffect(() => {
-    const handle = () => {
-      console.log(computedCoordinates, scrollY);
-    };
-    window.addEventListener('scroll', handle);
-    return () => {
-      window.addEventListener('scroll', handle);;
-    }
-  }, [scrollY]);
+  const menuCallbackHandler = (callback?: () => void) => () => {
+    callback?.();
+    onClickHandle();
+  }
 
   return (
     <>
@@ -82,14 +55,14 @@ const DropdownMenu = (props: IDropdownMenuProps) => {
         <MoreIcon width={16} height={16} />
       </Button>
       {
-        isOpen && items
+        isOpen && items && isVisible
           ? <ContentWrap ref={(node:HTMLDivElement) => {
               setMenuNode(node);
             }}
-            top={computedCoordinates.top}
-            left={computedCoordinates.left}
+            top={top}
+            left={left}
           >
-            {items.map(({ id, callback, label, icon: Icon, props }) => <MenuButton key={id} onClick={callback}><span>{label}</span>{Icon ? <IconWrap><Icon {...props} /></IconWrap> : null}</MenuButton>)}
+            {items.map(({ id, callback, label, icon: Icon, props }) => <MenuButton key={id} onClick={menuCallbackHandler(callback)}><span>{label}</span>{Icon ? <IconWrap><Icon {...props} /></IconWrap> : null}</MenuButton>)}
           </ContentWrap>
           : null
       }

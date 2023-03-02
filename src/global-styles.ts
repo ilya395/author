@@ -8,15 +8,29 @@ export const GlobalStyles = createGlobalStyle`
     font-style: normal;
   }
 
+  html, body {
+    width: 100%;
+    height: 100%;
+
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+
+    overflow: auto;
+
+    scroll-behavior: smooth;
+
+    font-family: 'Montserrat', sans-serif;
+  }
+
   html {
     margin-left: calc(100vw - 100%);
   }
 
-  body, * {
+  * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Montserrat', sans-serif;
   }
 
   ul {

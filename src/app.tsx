@@ -9,22 +9,20 @@ const App = () => {
   return (
     <>
       <GlobalStyles />
-      <Wrap>
-        <Content id={WORK_AREA_ID}>
-          <One>
-            <DropdownMenu actionType={EActionTypes.Hover} items={menuItems} />
-          </One>
-          <Two>
-            <DropdownMenu items={menuItems} />
-          </Two>
-          <Three>
-            <DropdownMenu actionType={EActionTypes.Hover} items={menuItems} />
-          </Three>
-          <Four>
-            <DropdownMenu items={menuItems} />
-          </Four>
-        </Content>
-      </Wrap>
+      <Content id={WORK_AREA_ID}>
+        <One>
+          <DropdownMenu items={menuItems} />
+        </One>
+        <Two>
+          <DropdownMenu items={menuItems} />
+        </Two>
+        <Three>
+          <DropdownMenu actionType={EActionTypes.Hover} items={menuItems} />
+        </Three>
+        <Four>
+          <DropdownMenu items={menuItems} />
+        </Four>
+      </Content>
     </>
   );
 };
@@ -32,15 +30,15 @@ const App = () => {
 export default App;
 
 const Wrap = styled.div`
-  width: 100vw;
+  min-width: 100%;
   min-height: 100vh;
   overflow-y: scroll;
-  position: relative;
+
 `;
 
 const Content = styled.div`
   width: 100%;
-  height: 1200px;
+  height: 600px;
   display: grid;
   grid-template-areas:
   'one two'

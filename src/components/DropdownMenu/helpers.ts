@@ -2,8 +2,6 @@ import { WORK_AREA_ID } from "../../types/constants";
 
 export type TElement = React.MutableRefObject<HTMLButtonElement | HTMLDivElement | null>;
 
-
-
 export const getProportions = (arg: TElement) => {
   const elem = arg.current?.getBoundingClientRect();
   return {
@@ -29,18 +27,21 @@ export const getСoordinates = (arg: TElement) => {
     (workArea?.clientWidth ?? 0),
     document.body.scrollWidth, document.documentElement.scrollWidth,
     document.body.offsetWidth, document.documentElement.offsetWidth,
-    document.body.clientWidth, document.documentElement.clientWidth
+    document.body.clientWidth, document.documentElement.clientWidth,
   );
+
+  const innerWidth = window.innerWidth;
+  const scrollWidthValue = innerWidth - getDocumentWidth;
 
   const elem = arg.current?.getBoundingClientRect();
   const viewWidth = document.documentElement.clientWidth;
   const viewHeight = document.documentElement.clientHeight;
-  console.log(window.pageYOffset, getDocumentHeight, elem?.top, elem?.height, elem?.bottom);
+
   return {
-    xLeft: window.pageXOffset + (elem?.left ?? 0),
-    xRight: elem ? window.pageXOffset + elem.right : undefined, // viewWidth - elem.x - elem.width
-    yTop: window.pageYOffset + (elem?.top ?? 0),
-    yBottom: elem ? window.pageYOffset + elem.bottom : undefined, // viewHeight - elem.top - elem.height
+    xLeft: (elem?.x ?? 0) + window.pageXOffset,
+    xRight: elem ? getDocumentWidth - elem.x - window.pageXOffset : undefined,
+    yTop: window.pageYOffset + (elem?.y ?? 0),
+    yBottom: elem ? getDocumentHeight - elem.y - window.pageYOffset : undefined,
     width: elem?.width,
     height: elem?.height,
   };

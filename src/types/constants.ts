@@ -6,6 +6,8 @@ export const MIN_WIDTH = 260;
 
 export const WORK_AREA_ID = 'work-area';
 
+const testCallback = () => setTimeout(() => console.log('карамба!'), 2000);
+
 export interface IMenuItem {
   id: number;
   label: string;
@@ -22,6 +24,7 @@ export const menuItems = [
       width: 16,
       height: 16,
     },
+    callback: testCallback,
   },
   {
     id: 2,
@@ -31,6 +34,7 @@ export const menuItems = [
       width: 16,
       height: 16,
     },
+    callback: testCallback,
   },
   {
     id: 3,
@@ -40,5 +44,6 @@ export const menuItems = [
       width: 16,
       height: 16,
     },
+    callback: testCallback,
   },
 ] as Array<IMenuItem>;
