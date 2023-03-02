@@ -3,14 +3,9 @@ import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import { Configuration as WebpackDevServerConfiguration } from 'webpack-dev-server';
-
-interface BaseConfiguration extends Configuration {
-  devServer?: WebpackDevServerConfiguration;
-};
 
 const config: Configuration = {
-  mode: 'development',
+  mode: 'production',
   entry: {
     main: ['./src/index.tsx'],
   },
@@ -23,22 +18,6 @@ const config: Configuration = {
       '.js', '.jsx', '.ts', '.tsx'
     ],
   },
-  optimization: {
-    splitChunks: {
-      chunks: 'all',
-    }
-  },
-  devServer: {
-    client: {
-      logging: 'info',
-      overlay: true,
-    },
-    open: true,
-    port: 4200,
-    hot: true,
-    historyApiFallback: true,
-  },
-  devtool: 'source-map',
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/index.html',
