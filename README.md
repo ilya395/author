@@ -1,2 +1,2 @@
 # author
-pnpm install / npm instal
+pnpm install / npm install
