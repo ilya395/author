@@ -43,7 +43,7 @@ const DropdownMenu = <P extends JSX.IntrinsicAttributes, >(props: IDropdownMenuP
   const menuCallbackHandler = (callback?: () => void) => () => {
     callback?.();
     onClickHandle();
-  }
+  };
 
   return (
     <>

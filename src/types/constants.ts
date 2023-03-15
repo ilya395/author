@@ -46,4 +46,34 @@ export const menuItems = [
     },
     callback: testCallback,
   },
+  {
+    id: 4,
+    label: 'Поделиться',
+    icon: ShareIcon,
+    props: {
+      width: 16,
+      height: 16,
+    },
+    callback: testCallback,
+  },
+  {
+    id: 5,
+    label: 'Поделиться',
+    icon: ShareIcon,
+    props: {
+      width: 16,
+      height: 16,
+    },
+    callback: testCallback,
+  },
+  {
+    id: 6,
+    label: 'Поделиться',
+    icon: ShareIcon,
+    props: {
+      width: 16,
+      height: 16,
+    },
+    callback: testCallback,
+  },
 ] as Array<IMenuItem>;

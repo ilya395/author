@@ -66,14 +66,14 @@ export default App;
 
 const Content = styled.div`
   width: 100%;
-  height: 800px;
+  height: 1200px;
   display: grid;
   grid-template-areas:
   'one two'
   'three four';
 
   position: relative;
-  padding: 25px;
+  padding: 250px;
 `;
 
 const One = styled.div`
